@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 public class PlayerMoveController : MonoBehaviour
 {
@@ -11,6 +12,12 @@ public class PlayerMoveController : MonoBehaviour
 
     private Rigidbody rigidbody1;
 
+    [SerializeField]
+    private Raft raftObj;
+    private Transform RaftObjCompare; 
+
+    Vector3 moveRaftOffsetPos = Vector3.zero;
+
     private void Awake()
     {
         rigidbody1 = GetComponent<Rigidbody>();
@@ -19,6 +26,18 @@ public class PlayerMoveController : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
+        RaftUpdate();
+    }
+
+    private void RaftUpdate()
+    {
+        if(raftObj == null)
+        {
+            return;
+        }
+
+        Vector3 actorPos = raftObj.transform.position + moveRaftOffsetPos;
+        this.transform.position = actorPos;
     }
 
     public void OnMoveInput(InputAction.CallbackContext context)
@@ -40,5 +59,41 @@ public class PlayerMoveController : MonoBehaviour
         dir.y = rigidbody1.velocity.y;
 
         rigidbody1.velocity = dir;
+        moveRaftOffsetPos += dir;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag.Contains("Raft"))
+        {
+            raftObj = other.transform.parent.GetComponent<Raft>();
+     
+            if(RaftObjCompare != null)
+            {
+                RaftObjCompare = raftObj.transform;
+                moveRaftOffsetPos = this.transform.position - raftObj.transform.position;
+            }
+            return;
+        }
+
+        if(other.tag.Contains("Crush"))
+        {
+
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag.Contains("Raft") && RaftObjCompare == other.transform.parent)
+        {
+            RaftObjCompare = null;
+            raftObj = null;
+            moveRaftOffsetPos = Vector3.zero;
+        }
+    }
+
+    public void GameOver()
+    {
+
     }
 }
