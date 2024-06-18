@@ -18,12 +18,19 @@ public class PlayerMoveController : MonoBehaviour
 
     Vector3 moveRaftOffsetPos = Vector3.zero;
 
+    public EnvMapManager mapManager;
+
     private void Awake()
     {
         rigidbody1 = GetComponent<Rigidbody>();
     }
 
-    private void FixedUpdate()
+    private void Start()
+    {
+        mapManager.UpdateForwardBackMove((int)this.transform.position.z);
+
+    }
+        private void FixedUpdate()
     {
         Move();
         RaftUpdate();
@@ -60,6 +67,8 @@ public class PlayerMoveController : MonoBehaviour
 
         rigidbody1.velocity = dir;
         moveRaftOffsetPos += dir;
+        mapManager.UpdateForwardBackMove((int)this.transform.position.z);
+
     }
 
     private void OnTriggerEnter(Collider other)

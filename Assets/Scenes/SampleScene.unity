@@ -487,6 +487,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   raftObj: {fileID: 0}
+  mapManager: {fileID: 1804169519}
 --- !u!114 &512572289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1687,13 +1688,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ab51c02a897eaa4c878cbab578233cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  envObjectArray:
-  - {fileID: 571338121}
-  - {fileID: 311350454}
-  - {fileID: 1454491553}
+  DefaultRoad: {fileID: 311350456}
+  WaterRoad: {fileID: 1454491554}
+  GrassSpawn: {fileID: 571338123}
   parentTransform: {fileID: 1804169520}
   minPosZ: -20
   maxPosZ: 20
+  frontOffsetPosZ: 10
+  backOffsetPosZ: 10
 --- !u!4 &1804169520
 Transform:
   m_ObjectHideFlags: 0
